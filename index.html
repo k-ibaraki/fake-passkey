@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<body>
+  <h1>パスキーもどき</h1>
+  <p>
+    パスキー認証 :
+    <button onclick="authenticatePasskey()">パスキーで認証</button>
+  </p>
+  <p>
+    パスキー登録 :
+    <input type="name" id="name" placeholder="なまえ">
+    <button onclick="registerPasskey()">パスキーを登録</button>
+  </p>
+
+  <script>
+    // パスキー認証
+    async function authenticatePasskey() {
+      const publicKeyCredentialRequestOptions = {
+        challenge: new Uint8Array([0]),
+      };
+
+      try {
+        const assertion = await navigator.credentials.get({
+          publicKey: publicKeyCredentialRequestOptions,
+        });
+        console.log("認証成功:", assertion);
+        alert('認証成功');
+      } catch (error) {
+        console.error("認証エラー:", error);
+        alert('認証失敗');
+      }
+    }
+
+    // パスキー登録
+    async function registerPasskey() {
+      const name = document.getElementById('name').value;
+
+      if (!name) {
+        alert('名前を入力してください。');
+        return;
+      }
+
+      const publicKeyCredentialCreationOptions = {
+        challenge: new Uint8Array([0]),
+        rp: {
+          name: "パスキーもどき",
+        },
+        user: {
+          id: new TextEncoder().encode(name),
+          name: name,
+          displayName: name,
+        },
+        pubKeyCredParams: [{ alg: -7, type: "public-key", }],
+      };
+
+      try {
+        const credential = await navigator.credentials.create({
+          publicKey: publicKeyCredentialCreationOptions,
+        });
+        console.log("登録成功:", credential);
+        alert('登録成功');
+      } catch (error) {
+        console.error("登録失敗:", error);
+        alert('登録失敗');
+      }
+    }
+  </script>
+</body>
+
+</html>

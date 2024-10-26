@@ -17,7 +17,7 @@
     // パスキー認証
     async function authenticatePasskey() {
       const publicKeyCredentialRequestOptions = {
-        challenge: new Uint8Array([0]),
+        challenge: new Uint8Array(1),
       };
 
       try {
@@ -42,7 +42,7 @@
       }
 
       const publicKeyCredentialCreationOptions = {
-        challenge: new Uint8Array([0]),
+        challenge: new Uint8Array(1),
         rp: {
           name: "パスキーもどき",
         },

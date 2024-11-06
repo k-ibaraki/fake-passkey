@@ -2,7 +2,7 @@
 <html lang="ja">
 
 <body>
-  <h1>パスキーもどき v0.2</h1>
+  <h1>パスキーもどき v0.3</h1>
   <p>
     パスキー認証: <button onclick="authenticate()">認証</button>
   </p>
@@ -16,8 +16,6 @@
     async function authenticate() {
       const options = {
         challenge: new Uint8Array([0]),
-        // userVerification: "discouraged",
-        // allowCredentials: [] // 空配列にすることで全ての保存されたパスキーを探す
       };
 
       try {
@@ -54,8 +52,8 @@
           { type: "public-key", alg: -7 },
         ],
         authenticatorSelection: {
-          authenticatorAttachment: "platform",
-          requireResidentKey: true,
+          //authenticatorAttachment: "platform",
+          //requireResidentKey: true,
           residentKey: "required"
         }
       };

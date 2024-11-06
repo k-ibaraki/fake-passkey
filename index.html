@@ -1,31 +1,31 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <body>
-  <h1>パスキーテスト</h1>
+  <h1>パスキーもどき</h1>
   <p>
-    認証: <button onclick="authenticate()">認証</button>
+    パスキー認証: <button onclick="authenticate()">認証</button>
   </p>
   <p>
-    登録: <input type="text" id="name" placeholder="名前">
+    パスキー登録: <input type="text" id="name" placeholder="パスキー名">
     <button onclick="register()">登録</button>
   </p>
 
   <script>
-    // 認証
+    // パスキー認証
     async function authenticate() {
       const options = {
-        challenge: new Uint8Array([1, 2, 3, 4]),
-        rpId: location.hostname,
+        challenge: new Uint8Array([0]),
         userVerification: "discouraged",
         allowCredentials: [] // 空配列にすることで全ての保存されたパスキーを探す
       };
 
       try {
-        const result = await navigator.credentials.get({
+        const assertion = await navigator.credentials.get({
           publicKey: options
         });
-        const name = new TextDecoder().decode(result.response.userHandle);
-        alert(`認証成功: ${name}さん`);
+        console.log("認証成功:", assertion);
+        alert("認証成功:");
       } catch (e) {
         alert('認証エラー: ' + e);
         console.error(e);
@@ -40,11 +40,10 @@
         return;
       }
 
-      const options = {
-        challenge: new Uint8Array([1, 2, 3, 4]),
+      const publicKeyCredentialCreationOptions = {
+        challenge: new Uint8Array([0]),
         rp: {
-          name: "テストサイト",
-          id: location.hostname
+          name: "fake-passkey",
         },
         user: {
           id: new TextEncoder().encode(name),
@@ -53,25 +52,25 @@
         },
         pubKeyCredParams: [
           { type: "public-key", alg: -7 },
-          { type: "public-key", alg: -257 }
         ],
-        authenticatorSelection: {
-          authenticatorAttachment: "platform",
-          requireResidentKey: true,
-          residentKey: "required"
-        }
+        // authenticatorSelection: {
+        //   authenticatorAttachment: "platform",
+        //   requireResidentKey: true,
+        //   residentKey: "required"
+        // }
       };
 
       try {
-        const result = await navigator.credentials.create({
-          publicKey: options
+        const credential = await navigator.credentials.create({
+          publicKey: publicKeyCredentialCreationOptions
         });
-        alert('登録成功');
+        alert('登録成功:', credential);
       } catch (e) {
-        alert('登録エラー: ' + e);
         console.error(e);
+        alert('登録失敗');
       }
     }
   </script>
 </body>
+
 </html>

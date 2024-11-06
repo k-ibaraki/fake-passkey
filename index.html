@@ -2,7 +2,7 @@
 <html lang="ja">
 
 <body>
-  <h1>パスキーもどき v0.3</h1>
+  <h1>パスキーもどき v0.5</h1>
   <p>
     パスキー認証: <button onclick="authenticate()">認証</button>
   </p>
@@ -52,8 +52,6 @@
           { type: "public-key", alg: -7 },
         ],
         authenticatorSelection: {
-          //authenticatorAttachment: "platform",
-          //requireResidentKey: true,
           residentKey: "required"
         }
       };

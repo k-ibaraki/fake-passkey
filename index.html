@@ -18,6 +18,7 @@
     async function authenticatePasskey() {
       const publicKeyCredentialRequestOptions = {
         challenge: new Uint8Array(1),
+        rpId: window.location.hostname,
       };
 
       try {
@@ -45,6 +46,7 @@
         challenge: new Uint8Array(1),
         rp: {
           name: "fake-passkey",
+          id: window.location.hostname,
         },
         user: {
           id: new TextEncoder().encode(name),

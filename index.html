@@ -18,6 +18,7 @@
     パスキー登録: <input type="text" id="name" placeholder="パスキー名">
     <button onclick="register()">登録</button>
   </p>
+  <p id="status">未ログイン</p>
 
   <script>
     // パスキー認証
@@ -28,9 +29,9 @@
             challenge: new Uint8Array([0]),
           }
         });
-        alert("認証成功: " + assertion.id);
+        document.getElementById('status').textContent = 'ログインしました（ID: ' + assertion.id + '）';
       } catch (e) {
-        alert('認証エラー: ' + e);
+        document.getElementById('status').textContent = '認証エラー: ' + e;
       }
     }
 
@@ -55,9 +56,9 @@
             }
           }
         });
-        alert('登録成功: ' + credential.id);
+        document.getElementById('status').textContent = '登録しました（ID: ' + credential.id + '）';
       } catch (e) {
-        alert('登録失敗: ' + e);
+        document.getElementById('status').textContent = '登録失敗: ' + e;
       }
     }
   </script>

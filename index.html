@@ -22,56 +22,42 @@
   <script>
     // パスキー認証
     async function authenticate() {
-      const options = {
-        challenge: new Uint8Array([0]),
-      };
-
       try {
         const assertion = await navigator.credentials.get({
-          publicKey: options
+          publicKey: {
+            challenge: new Uint8Array([0]),
+          }
         });
-        console.log("認証成功:", assertion);
-        alert("認証成功:");
+        alert("認証成功: " + assertion.id);
       } catch (e) {
         alert('認証エラー: ' + e);
-        console.error(e);
       }
     }
 
     // 登録
     async function register() {
       const name = document.getElementById('name').value;
-      if (!name) {
-        alert('名前を入力してください');
-        return;
-      }
-
-      const publicKeyCredentialCreationOptions = {
-        challenge: new Uint8Array([0]),
-        rp: {
-          name: "fake-passkey",
-        },
-        user: {
-          id: new TextEncoder().encode(name),
-          name: name,
-          displayName: name
-        },
-        pubKeyCredParams: [
-          { type: "public-key", alg: -7 },
-        ],
-        authenticatorSelection: {
-          residentKey: "preferred"
-        }
-      };
-
       try {
         const credential = await navigator.credentials.create({
-          publicKey: publicKeyCredentialCreationOptions
+          publicKey: {
+            challenge: new Uint8Array([0]),
+            rp: {
+              name: "fake-passkey",
+            },
+            user: {
+              id: new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(name))),
+              name: name,
+              displayName: name
+            },
+            pubKeyCredParams: [],
+            authenticatorSelection: {
+              residentKey: "preferred"
+            }
+          }
         });
-        alert('登録成功:', credential);
+        alert('登録成功: ' + credential.id);
       } catch (e) {
-        console.error(e);
-        alert('登録失敗');
+        alert('登録失敗: ' + e);
       }
     }
   </script>
